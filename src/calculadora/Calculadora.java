@@ -1,5 +1,6 @@
 package calculadora;
 
+import java.io.FileWriter;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
@@ -10,28 +11,54 @@ public class Calculadora {
 	private String operador;
 	public static int calcular(int a, int b, String operador)
 	{
+		int c;
+		String adicional = "";
 		switch(operador)
 		{
 			case "+":
-				return a+b;
+				c = a+b;
+				break;
 			case "-":
-				return a-b;
+				c = a-b;
+				break;
 			case "*":
-				return a*b;
+				c = a*b;
+				break;
 			case "/":
 				if(b == 0)
 				{
-					JOptionPane.showMessageDialog(null, "No se puede dividir entre cero");
+					adicional = "No se puede dividir entre cero";
+					JOptionPane.showMessageDialog(null, adicional);
 					return 0;
 				}
 				else
 				{
-					return a/b;
+					c = a/b;
 				}
+				break;
 			default:
-				JOptionPane.showMessageDialog(null, "Operador Inválido");
-				return 0;
+				adicional = "Operador invalido";
+				JOptionPane.showMessageDialog(null, adicional);
+				c = 0;
+				break;
 		}
+		try {
+			FileWriter fileWriter = new FileWriter("log.txt", true);
+			if(adicional.isEmpty())
+			{
+				fileWriter.write(adicional + "\n");	
+			}
+			else
+			{
+				fileWriter.write(a + operador + b + "=" + c + "\n");
+			}
+			fileWriter.flush();
+			fileWriter.close();
+		}catch(Exception ex)
+		{
+			
+		}
+		return c;
 	}
 	public int calcular()
 	{
